@@ -140,7 +140,7 @@ class TLDetector(object):
         stop_line_positions = self.config['stop_line_positions']
         if(self.pose):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
-            car_position = self.get_closest_waypoint(self.pose.pose)
+            # car_position = self.get_closest_waypoint(self.pose.pose)
             diff = len(self.waypoints.waypoints)
             for i, light in enumerate(self.lights):
                 #get stop line waypoint idx
