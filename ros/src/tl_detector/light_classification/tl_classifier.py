@@ -1,4 +1,14 @@
 from styx_msgs.msg import TrafficLight
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageColor
+import time
+from scipy.stats import norm
+
+plt.style.use('ggplot')
 
 class TLClassifier(object):
     def __init__(self):
