@@ -60,7 +60,7 @@ class WaypointUpdater(object):
     
     def get_closest_waypoint_idx(self):
         x = self.pose.pose.position.x
-        y = self.pose.pose.postion.y
+        y = self.pose.pose.position.y
         closest_idx = self.waypoint_tree.query([x,y],1)[1]
         closest_coord = self.waypoints_2d[closest_idx]
         prev_coord = self.waypoints_2d[closest_idx - 1]
@@ -74,12 +74,12 @@ class WaypointUpdater(object):
         return closest_idx
         
     def publish_waypoints(self, closest_idx):
-        final_lane = self.generate_lane()
-        self.final_waypoints_pub.publish(final_lane)
-        # lane = Lane()
-        # lane.header = self.base_waypoints.header
-        # lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx+ LOOKAHEAD_WPS]
-        # self.final_waypoints_pub.publish(lane)
+        # final_lane = self.generate_lane()
+        # self.final_waypoints_pub.publish(final_lane)
+        lane = Lane()
+        lane.header = self.base_waypoints.header
+        lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx+ LOOKAHEAD_WPS]
+        self.final_waypoints_pub.publish(lane)
     
     def generate_lane(self):
         lane = Lane()
