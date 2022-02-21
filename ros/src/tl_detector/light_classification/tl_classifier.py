@@ -14,7 +14,7 @@ import time
 
 # cmap = ImageColor.colormap
 # COLOR_LIST = sorted([c for c in cmap.keys()])
-# SSD_GRAPH_FILE = 'ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'
+SSD_GRAPH_FILE = 'ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'
 
 class TLClassifier(object):
     def __init__(self):        
@@ -68,10 +68,29 @@ class TLClassifier(object):
             scores = np.squeeze(scores)
             classes = np.squeeze(classes)
 
-            confidence_cutoff = 0.8
-            # Filter boxes with a confidence score less than `confidence_cutoff`
-            boxes, scores, classes = filter_boxes(confidence_cutoff, boxes, scores, classes)
+            # confidence_cutoff = 0.8
+            # # Filter boxes with a confidence score less than `confidence_cutoff`
+            # boxes, scores, classes = filter_boxes(confidence_cutoff, boxes, scores, classes)
+            
+            min_score_thresh = .5
+            count = 0
+            count1 = 0
+            # print(scores)
 
+            for i in range(boxes.shape[0]):
+                if scores is None or scores[i] > min_score_thresh:
+                    count1 += 1
+                    class_name = self.category_index[classes[i]]['name']
+
+                    # Traffic light thing
+                    if class_name == 'Red':
+                        count += 1
+
+            # print(count)
+            if count < count1 - count:
+                self.current_light = TrafficLight.GREEN
+            else:
+                self.current_light = TrafficLight.RED
             # The current box coordinates are normalized to a range between 0 and 1.
             # This converts the coordinates actual location on the image.
             width, height = image.size
