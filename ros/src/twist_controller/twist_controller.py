@@ -40,8 +40,8 @@ class Controller(object):
         if not dbw_enabled:
             self.throttle_controller.reset()
             return 0.0, 0., 0.
-        current_vel = self.lpf.filt(current_vel)
-        # current_vel = current_vel
+        # current_vel = self.lpf.filt(current_vel)
+        current_vel = current_vel
         
         steering = self.yawController.get_steering(linear_vel, angular_vel, current_vel)
         
