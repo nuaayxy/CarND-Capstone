@@ -12,7 +12,7 @@ class TLClassifier(object):
     def __init__(self):
         self.current_light = TrafficLight.UNKNOWN
         
-        SSD_GRAPH_FILE = 'ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'        
+        SSD_GRAPH_FILE = './frozen_inference_graph.pb'        
         self.detection_graph = self.load_graph(SSD_GRAPH_FILE)
         # The input placeholder for the image.
         # `get_tensor_by_name` returns the Tensor with the associated name in the Graph.
