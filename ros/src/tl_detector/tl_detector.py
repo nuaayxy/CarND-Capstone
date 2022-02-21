@@ -23,9 +23,8 @@ class TLDetector(object):
         self.waypoints = None
         self.waypoints_2d = None
         self.camera_image = None
-        self.lights = []
         self.waypoint_tree = None
-        self.adjust = False
+        self.lights = []
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -158,21 +157,21 @@ class TLDetector(object):
 
         """
         #TODO implement
-        # closest_idx = self.waypoint_tree.query([x,y],1)[1]
-        # return closest_idx
-        min_dist = float('inf')
-        closest_waypoint_index = 0  # Index to return
+        closest_idx = self.waypoint_tree.query([x,y],1)[1]
+        return closest_idx
+        # min_dist = float('inf')
+        # closest_waypoint_index = 0  # Index to return
 
-        for i, wp in enumerate(self.waypoints):
-            dist = pow(x - wp.x, 2) + pow(y - wp.y, 2)
+        # for i, wp in enumerate(self.waypoints):
+        #     dist = pow(x - wp.x, 2) + pow(y - wp.y, 2)
             
-            # Update the minimum distance and update the index
-            if dist < min_dist:
-                min_dist = dist
-                closest_waypoint_index = i
+        #     # Update the minimum distance and update the index
+        #     if dist < min_dist:
+        #         min_dist = dist
+        #         closest_waypoint_index = i
     
-        # Return the index of the closest waypoint in self.waypoints
-        return closest_waypoint_index
+        # # Return the index of the closest waypoint in self.waypoints
+        # return closest_waypoint_index
 
     def get_light_state(self, light):
         """Determines the current color of the traffic light
