@@ -1,4 +1,4 @@
-from styx_msgs.msg import TrafficLight
+
 import tensorflow as tf
 import numpy as np
 from PIL import Image
@@ -6,18 +6,13 @@ from PIL import ImageDraw
 from PIL import ImageColor
 import cv2
 import time
-# from scipy.stats import norm
-
-
-# import matplotlib.pyplot as plt
-# plt.style.use('ggplot')
-
-# cmap = ImageColor.colormap
-# COLOR_LIST = sorted([c for c in cmap.keys()])
-SSD_GRAPH_FILE = 'ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'
+from styx_msgs.msg import TrafficLight
 
 class TLClassifier(object):
-    def __init__(self):        
+    def __init__(self):
+        self.current_light = TrafficLight.UNKNOWN
+        
+        SSD_GRAPH_FILE = 'ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb'        
         self.detection_graph = self.load_graph(SSD_GRAPH_FILE)
         # The input placeholder for the image.
         # `get_tensor_by_name` returns the Tensor with the associated name in the Graph.
@@ -91,40 +86,6 @@ class TLClassifier(object):
                 self.current_light = TrafficLight.GREEN
             else:
                 self.current_light = TrafficLight.RED
-            # The current box coordinates are normalized to a range between 0 and 1.
-            # This converts the coordinates actual location on the image.
-            width, height = image.size
-            box_coords = to_image_coords(boxes, height, width)
 
-        return TrafficLight.UNKNOWN
+        return self.current_light
     
-    
-def filter_boxes(min_score, boxes, scores, classes):
-    """Return boxes with a confidence >= `min_score`"""
-    n = len(classes)
-    idxs = []
-    for i in range(n):
-        if scores[i] >= min_score:
-            idxs.append(i)
-    
-    filtered_boxes = boxes[idxs, ...]
-    filtered_scores = scores[idxs, ...]
-    filtered_classes = classes[idxs, ...]
-    return filtered_boxes, filtered_scores, filtered_classes
-
-
-def to_image_coords(boxes, height, width):
-    """
-    The original box coordinate output is normalized, i.e [0, 1].
-    
-    This converts it back to the original coordinate based on the image
-    size.
-    """
-    box_coords = np.zeros_like(boxes)
-    box_coords[:, 0] = boxes[:, 0] * height
-    box_coords[:, 1] = boxes[:, 1] * width
-    box_coords[:, 2] = boxes[:, 2] * height
-    box_coords[:, 3] = boxes[:, 3] * width
-    
-    return box_coords
-
